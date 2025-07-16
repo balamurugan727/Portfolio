@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Find Donors</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="donate.html">Donate</a>
+    <a href="donor.html">Donor</a>
+  </nav>
+
+  <div class="container">
+    <h2>Search Donors</h2>
+    <input type="text" id="bloodGroupInput" placeholder="Enter Blood Group (e.g. O+)">
+    <button onclick="searchDonors()">Search</button>
+    <div id="results"></div>
+  </div>
+
+  <script>
+    function searchDonors() {
+      const bg = document.getElementById('bloodGroupInput').value.trim().toUpperCase();
+      const donors = JSON.parse(localStorage.getItem("donors") || "[]");
+
+      const matched = donors.filter(d => d.bloodGroup.toUpperCase() === bg);
+      const resultDiv = document.getElementById('results');
+      resultDiv.innerHTML = matched.length
+        ? matched.map(d => `
+          <div class="card">
+            <strong>${d.name}</strong> (${d.gender}, Age ${d.age})<br>
+            Blood Group: ${d.bloodGroup}<br>
+            Phone: ${d.phone}<br>
+            Email: ${d.email}<br>
+            Location: ${d.location}<br>
+            Donated on: ${d.date}
+          </div>
+        `).join('')
+        : "<p>No donors found for that blood group.</p>";
+    }
+  </script>
+
+  <footer>&copy; 2025 Online Blood Bank</footer>
+</body>
+</html>
